@@ -2,10 +2,26 @@
 <html>
 <head><title>Home</title></head>
 <body>
-
-
   <h1>Welcome, {{ admin.username }}!</h1>
   <p>Your email: {{ admin.email }}</p>
   <a href="{% url 'logout' %}">Logout</a>
+
+  {% if request.session.is_admin %}
+    <!-- Only visible to admin -->
+    <h2>Create New Employee</h2>
+    <form method="post" action="{% url 'create_employee' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Create Employee</button>
+    </form>
+  {% endif %}
+
+  {% comment %} {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %} {% endcomment %}
 </body>
 </html>

@@ -50,38 +50,29 @@ function setupEyeToggle(eyeId, inputId) {
   setupEyeToggle('eye-icon1', 'password1');
   
 
-  function passwordStrength() {
-    const passwordInput = document.getElementById('password');
-    const strengthText = document.getElementById('strength-text');
+  document.addEventListener('DOMContentLoaded', function () {
+    const passwordInput = document.getElementById("password");
+    const strengthText = document.getElementById("strength-text");
   
-    passwordInput.addEventListener('input', function () {
+    passwordInput.addEventListener("input", function () {
       const password = passwordInput.value;
-      const length = password.length;
+      let strength = "";
   
-      if (length === 0) {
-        passwordInput.style.borderColor = 'green';
-        strengthText.textContent = '';
-        return;
-      } else if (length <= 2) {
-        passwordInput.style.borderColor = 'red';
-        strengthText.textContent = 'Weak';
-        strengthText.style.color = 'red';
-      } else if (length <= 4) {
-        passwordInput.style.borderColor = 'orange';
-        strengthText.textContent = 'Medium';
-        strengthText.style.color = 'orange';
-      } else if (length <= 6) {
-        passwordInput.style.borderColor = 'blue';
-        strengthText.textContent = 'Okay';
-        strengthText.style.color = 'blue';
+      if (password.length < 8) {
+        strength = "Too short";
+        strengthText.style.color = "red";
+      } else if (!/[0-9]/.test(password)) {
+        strength = "Add at least one number";
+        strengthText.style.color = "orange";
+      } else if (!/[!@#$%^&*]/.test(password)) {
+        strength = "Add a special character";
+        strengthText.style.color = "orange";
       } else {
-        passwordInput.style.borderColor = 'green';
-        strengthText.textContent = 'Good';
-        strengthText.style.color = 'green';
+        strength = "Strong password";
+        strengthText.style.color = "green";
       }
-    });
-  }
   
-  // Call the function
-  passwordStrength();
+      strengthText.textContent = strength;
+    });
+  });
   

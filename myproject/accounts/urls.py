@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 urlpatterns = [
@@ -9,4 +11,8 @@ urlpatterns = [
     path('reset-password/<str:token>/', views.reset_password, name='reset_password'),
     path('home/', views.home, name='home'),
     path('logout/', views.logout_view, name='logout'),  # <-- add this
+    path('create-employee/', views.create_employee, name='create_employee'),
+
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
