@@ -12,6 +12,9 @@ urlpatterns = [
     path('home/', views.home, name='home'),
     path('logout/', views.logout_view, name='logout'),  # <-- add this
     path('create-employee/', views.create_employee, name='create_employee'),
+    path('update-status/', views.update_status, name='update_status'),
+    path('excel/', views.show_excel_table, name='excel_table'),
+    path('assign/', views.assign_ticket, name='assign_ticket'),
 
 ]
 if settings.DEBUG:

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Excel Table</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 90%;
+      margin: 20px auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .search-form {
+      text-align: center;
+      margin-top: 20px;
+    }
+    input[type="text"] {
+      padding: 8px;
+      width: 300px;
+    }
+    button {
+      padding: 8px 12px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 90%;
+      margin: 20px auto;
+    }
+
+    .upload-form {
+      display: inline-block;
+    }
+
+    .upload-form input[type="file"] {
+      padding: 5px;
+    }
+
+    .upload-form button {
+      padding: 5px 10px;
+      margin-left: 5px;
+    }
+
+    .messages {
+      text-align: center;
+      color: green;
+    }
+    .messages .error {
+      color: red;
+    }
+  </style>
+</head>
+<!-- ...head section remains unchanged... -->
+
+<body>
+    <div class="top-bar">
+      <p><a href="{% url 'assign_ticket' %}">Assign a Ticket</a></p>
+  
+      <form class="upload-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="excel_file" accept=".xlsx" required>
+        <button type="submit">Upload Excel</button>
+      </form>
+    </div>
+  
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <p class="{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  
+    <h2 style="text-align: center;">Excel Table View</h2>
+  
+    <div class="search-form">
+      <form method="get">
+        <input type="text" name="q" placeholder="Search anything..." value="{{ query }}">
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  
+    <hr style="width: 50%; margin: 30px auto;">
+  
+    {% if headers %}
+    <table>
+      <thead>
+        <tr>
+          {% for header in headers %}
+            <th>{{ header }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+          <tr>
+            {% for cell in row %}
+              <td>{{ cell }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <p style="text-align:center;">No data found.</p>
+    {% endif %}
+  </body>
+  
+</html>

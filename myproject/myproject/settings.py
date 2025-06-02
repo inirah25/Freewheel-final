@@ -135,6 +135,12 @@ EMAIL_HOST_USER = 'harinimay2004@gmail.com'
 EMAIL_HOST_PASSWORD = 'dpmr xgqr nfnr nzkx'
 ##
 
+
+
+import os
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
