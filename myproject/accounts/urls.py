@@ -17,7 +17,7 @@ urlpatterns = [
     path('assign/', views.assign_ticket, name='assign_ticket'),
 
 
-    path('edit-excel/', views.edit_excel_table, name='edit_excel_table'),
+    
 
 ]
 if settings.DEBUG:
