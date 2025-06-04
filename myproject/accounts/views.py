@@ -15,6 +15,8 @@ import time
  
 from .forms import EmployeeForm
 from .models import Employee
+
+from .utils import read_admin_excel
  
  
 @never_cache # type: ignore
@@ -61,42 +63,102 @@ def logout_view(request):
  
  
 def home(request):
+
     is_admin = request.session.get('is_admin')
+
     excel_data = read_admin_excel()
+
+    admin = None
+
+    emp = None
  
+    # 🛠️ 1. Handle POST for status update
+
+    if request.method == 'POST':
+
+        new_status = request.POST.get('status')
+ 
+        if is_admin:
+
+            try:
+
+                admin = Admin.objects.get(id=request.session.get('admin_id'))
+
+                admin.status = new_status
+
+                admin.save()
+
+            except Admin.DoesNotExist:
+
+                return redirect('login')
+
+        else:
+
+            try:
+
+                emp = Employee.objects.get(id=request.session.get('employee_id'))
+
+                emp.status = new_status
+
+                emp.save()
+
+            except Employee.DoesNotExist:
+
+                return redirect('login')
+ 
+    # 🧠 2. Render page with updated info
+
     if is_admin:
-        admin_id = request.session.get('admin_id')
-        try:
-            admin = Admin.objects.get(id=admin_id)
-            from .forms import EmployeeForm
-            form = EmployeeForm()
-            employees = Employee.objects.all()  # Add this line
-            return render(request, 'accounts/home.html', {
-                'admin': admin,
-                'form': form,
-                'admin_status': admin.status,
-                'employees': employees,  # Pass employees to template
-                'excel_data': excel_data,
-            })
-        except Admin.DoesNotExist:
-            return redirect('login')
+
+        if not admin:
+
+            admin = Admin.objects.get(id=request.session.get('admin_id'))
+
+        form = EmployeeForm()
+
+        employees = Employee.objects.all()
  
+        return render(request, 'accounts/home.html', {
+
+            'admin': admin,
+
+            'form': form,
+
+            'admin_status': admin.status,
+
+            'employees': employees,
+
+            'excel_data': excel_data,
+
+        })
+
     else:
-        emp_id = request.session.get('employee_id')
-        try:
-            emp = Employee.objects.get(id=emp_id)
-            admin = Admin.objects.first()
-            employees = Employee.objects.all()
-            return render(request, 'accounts/home.html', {
-                'admin': emp,
-                'admin_status': admin.status if admin else 'Unavailable',
-                'admin_username': admin.username if admin else '',
-                'admin_email': admin.email if admin else '',
-                'employees': employees,
-                'excel_data': excel_data,
-         })
-        except Employee.DoesNotExist:
-            return redirect('login')
+
+        if not emp:
+
+            emp = Employee.objects.get(id=request.session.get('employee_id'))
+
+        admin_obj = Admin.objects.first()
+
+        employees = Employee.objects.all()
+ 
+        return render(request, 'accounts/home.html', {
+
+            'admin': emp,
+
+            'admin_status': admin_obj.status if admin_obj else 'Unavailable',
+
+            'admin_username': admin_obj.username if admin_obj else '',
+
+            'admin_email': admin_obj.email if admin_obj else '',
+
+            'employees': employees,
+
+            'excel_data': excel_data,
+
+        })
+
+ 
  
  
  
@@ -228,32 +290,32 @@ def create_employee(request):
  
     return render(request, 'accounts/home.html', {'form': form, 'admin': admin})
  
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+ 
 @require_POST
 def update_status(request):
-    if request.method == 'POST':
-        status = request.POST.get('status')
+    status = request.POST.get('status')
+    user = None
  
-        if request.session.get('is_admin'):
-            admin_id = request.session.get('admin_id')
-            try:
-                admin = Admin.objects.get(id=admin_id)
-                admin.status = status
-                admin.save()
-                return redirect('home')  # or wherever you show status
-            except Admin.DoesNotExist:
-                pass  # fall through to login redirect below
+    if request.session.get('is_admin'):
+        try:
+            user = Admin.objects.get(id=request.session['admin_id'])
+        except Admin.DoesNotExist:
+            pass
+    elif request.session.get('employee_id'):
+        try:
+            user = Employee.objects.get(id=request.session['employee_id'])
+        except Employee.DoesNotExist:
+            pass
  
-        elif request.session.get('employee_id'):
-            emp_id = request.session.get('employee_id')
-            try:
-                employee = Employee.objects.get(id=emp_id)
-                employee.status = status
-                employee.save()
-                return redirect('home')
-            except Employee.DoesNotExist:
-                pass  # fall through to login redirect below
+    if user:
+        user.status = status
+        user.save()
+        return JsonResponse({'success': True, 'new_status': status})
  
-    return redirect('login')  # fallback for unauthorized access
+    return JsonResponse({'success': False}, status=400)
+ 
  
  
  
@@ -268,8 +330,19 @@ from django.core.files.base import ContentFile
 EXCEL_FILENAME = 'Book.xlsx'
 EXCEL_PATH = os.path.join(settings.MEDIA_ROOT, EXCEL_FILENAME)
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+import os
+import pandas as pd
+from django.conf import settings
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+
+EXCEL_FILENAME = 'Book.xlsx'
+EXCEL_PATH = os.path.join(settings.MEDIA_ROOT, EXCEL_FILENAME)
+
 def show_excel_table(request):
-    # Handle file upload
+    # Handle Excel file upload
     if request.method == 'POST' and request.FILES.get('excel_file'):
         uploaded_file = request.FILES['excel_file']
         try:
@@ -277,12 +350,12 @@ def show_excel_table(request):
                 default_storage.delete(EXCEL_PATH)
             default_storage.save(EXCEL_PATH, ContentFile(uploaded_file.read()))
             messages.success(request, "Excel file uploaded successfully.")
-            return redirect('excel_table')  # reload to apply changes
+            return redirect('excel_table')
         except Exception as e:
             messages.error(request, f"Upload failed: {e}")
             return redirect('excel_table')
 
-    # Try reading the Excel file
+    # Read Excel file
     try:
         df = pd.read_excel(EXCEL_PATH)
     except FileNotFoundError:
@@ -297,21 +370,46 @@ def show_excel_table(request):
     if not df.empty and query:
         df = df[df.apply(lambda row: row.astype(str).str.lower().str.contains(query).any(), axis=1)]
 
-    # Format date columns
+    # Compute duration before dropping timestamp columns
+    if all(col in df.columns for col in ["Ticket solved - Timestamp", "Ticket assigned - Timestamp"]):
+        try:
+            df["Ticket solved - Timestamp"] = pd.to_datetime(df["Ticket solved - Timestamp"], errors='coerce')
+            df["Ticket assigned - Timestamp"] = pd.to_datetime(df["Ticket assigned - Timestamp"], errors='coerce')
+
+            df["Duration of the ticket"] = df["Ticket solved - Timestamp"] - df["Ticket assigned - Timestamp"]
+            df["Duration of the ticket"] = df["Duration of the ticket"].astype(str).str.replace("NaT", "")
+        except Exception as e:
+            messages.error(request, f"Could not compute duration: {e}")
+
+    # Drop specified columns
+    drop_cols = [
+        "Ticket solved - Timestamp",
+        "Ticket assigned - Timestamp",
+        "Ticket updated - Timestamp",
+        "Ticket due - Timestamp",
+        "Comment"
+    ]
+    df.drop(columns=[col for col in drop_cols if col in df.columns], inplace=True)
+
+    # Format date columns and clean up
     if not df.empty:
         for col in df.columns:
             if pd.api.types.is_datetime64_any_dtype(df[col]):
                 df[col] = df[col].dt.strftime('%Y-%m-%d %H:%M:%S')
-                df[col] = df[col].fillna('')
+            df[col] = df[col].fillna('')
 
     headers = df.columns.tolist() if not df.empty else []
     rows = df.fillna('').values.tolist() if not df.empty else []
 
+# Create zipped_rows = list of (header, value) pairs per row
+    zipped_rows = [list(zip(headers, row)) for row in rows]
+
     return render(request, 'accounts/excel_table.html', {
-        'headers': headers,
-        'rows': rows,
-        'query': request.GET.get('q', '')
-    })
+            'headers': headers,
+            'zipped_rows': zipped_rows,
+            'query': request.GET.get('q', '')
+})
+
 
  
  
@@ -350,3 +448,7 @@ def assign_ticket(request):
  
     return render(request, 'accounts/assign_ticket.html')
  
+
+
+
+

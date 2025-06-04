@@ -99,15 +99,28 @@
           {% endfor %}
         </tr>
       </thead>
+
+
       <tbody>
-        {% for row in rows %}
+        {% for row in zipped_rows %}
           <tr>
-            {% for cell in row %}
-              <td>{{ cell }}</td>
+            {% for column, cell in row %}
+              <td>
+                {% if column == "Ticket ID" %}
+                  <a href="https://freewheel.zendesk.com/agent/tickets/{{ cell }}" target="_blank">
+                    https://freewheel.zendesk.com/agent/tickets/{{ cell }}
+                  </a>
+                {% else %}
+                  {{ cell }}
+                {% endif %}
+              </td>
             {% endfor %}
           </tr>
         {% endfor %}
       </tbody>
+      
+      
+      
     </table>
     {% else %}
       <p style="text-align:center;">No data found.</p>

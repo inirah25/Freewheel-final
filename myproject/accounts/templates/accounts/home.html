@@ -17,19 +17,33 @@
   {% endif %}
  
   <h2>Update Your Status</h2>
-  <form method="post" action="{% url 'update_status' %}">
+  <form method="post">
+
     {% csrf_token %}
-    <label for="status">Status:</label>
-    <select name="status" id="status">
-      <option value="logged in" {% if admin.status == 'logged in' %}selected{% endif %}>Logged in</option>
-      <option value="logged off" {% if admin.status == 'logged off' %}selected{% endif %}>Logged off</option>
-      <option value="busy" {% if admin.status == 'busy' %}selected{% endif %}>Busy</option>
-      <option value="brb" {% if admin.status == 'brb' %}selected{% endif %}>BRB</option>
-      <option value="lunch" {% if admin.status == 'lunch' %}selected{% endif %}>Lunch</option>
-      <option value="meeting" {% if admin.status == 'meeting' %}selected{% endif %}>Meeting</option>
-    </select>
-    <button type="submit">Update</button>
+  <label for="status">Status:</label>
+  <select name="status" id="status">
+  
+      {% if admin.status == "logged off" %}
+  <option value="logged in">Login</option>
+  
+      {% elif admin.status == "logged in" %}
+  <option value="brb">BRB</option>
+  <option value="meeting">Meeting</option>
+  <option value="logged off">Log Off</option>
+  
+      {% elif admin.status == "brb" or admin.status == "meeting" %}
+  <option value="logged in">Back</option>
+  
+      {% else %}
+  <!-- Fallback if status is something unexpected -->
+  <option value="logged off">Log Off</option>
+  
+      {% endif %}
+  </select>
+  <button type="submit">Update</button>
   </form>
+  
+   
  
  
  

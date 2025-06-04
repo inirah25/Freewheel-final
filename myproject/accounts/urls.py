@@ -16,6 +16,9 @@ urlpatterns = [
     path('excel/', views.show_excel_table, name='excel_table'),
     path('assign/', views.assign_ticket, name='assign_ticket'),
 
+
+    path('edit-excel/', views.edit_excel_table, name='edit_excel_table'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
