@@ -1,0 +1,151 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  background-color: #d2cde0;
+}
+
+.container {
+  border-radius: 28px;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  padding: 5% 1.4% 1%;
+  gap: 1%;
+}
+
+.search-filter {
+  max-width: 19.5%;
+  background-color: #3120634a;
+  width: 100%;
+  border-radius: 20px;
+}
+
+.search-filter .search-box {
+  background: #fff;
+  height: 34px;
+  width: 250px;
+  border-radius: 30px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(21px, 13px);
+}
+
+.chat-window {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #3120634a;
+  border-radius: 14px;
+  max-width: 79.5%;
+}
+
+.messages {
+  flex-grow: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.in-msg, .out-msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.in-msg {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+.out-msg {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+}
+
+.in-msg .message{
+    word-wrap: break-word;
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 16px;
+    max-width: 31rem;
+}
+.out-msg .message {
+    word-wrap: break-word;
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 16px;
+    max-width: 31rem;
+
+}
+
+.incoming {
+  background-color: white;
+  color: black;
+}
+
+.outgoing {
+  background-color: #312063;
+  color: white;
+}
+
+.sender-name {
+  font-size: 10px;
+  color: #555;
+  margin-bottom: 2px;
+  margin-left: 2px;
+}
+
+.msg-profile img {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  background: #312063;
+  border-radius: 14px;
+  gap: 0.5%;
+}
+
+.chat-input input {
+  flex-grow: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  color: #000;
+}
+
+.chat-input input::placeholder {
+  color: #000;
+  opacity: 0.7;
+}
+
+.chat-input button {
+  padding: 10px 20px;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}

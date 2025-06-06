@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Navigation Bar</title>
+  <link rel="stylesheet" href="../static/accounts/css/navBar.css" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="../static/accounts/js/navBar.js" defer></script>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">
+      <a href='#slide1' style="text-decoration: none; color: white;">LOGO</a>
+    </div>
+
+    <div class="search-box">
+      <form action="#">
+        <input type="text" name="search" placeholder="Search" />
+        <button type="submit"><i class='bx bx-search-alt'></i></button>
+      </form>
+    </div>
+
+    <div class="nav-links">
+      <a href='#slide2'>Employees</a>
+      <a href='#slide3'>Tickets</a>
+      <a href="#slide4">Shifts</a>
+      <span></span>
+    </div>
+
+    <div class="profile" id="profile">
+      <img src="../static/images/attachment_88917790.png" alt="Profile" class="profile-img" id="profile-img">
+      <div class="dropdown_list" id="dropdown">
+        <a href="/dashboard" class="dropdown_link">
+          <span>Harisha</span>
+        </a>
+        <a href="/profile" class="dropdown_link">
+          <i class="fa-solid fa-user-tie"></i> 
+          <span>Profile</span>
+        </a>
+        <a href="/settings" class="dropdown_link">
+          <i class="fa-solid fa-gears"></i>
+          <span>Settings</span>
+        </a>
+        <a href="/support" class="dropdown_link">
+          <i class="fa-solid fa-handshake-angle"></i> 
+          <span>Help</span>
+        </a>
+        <a href="/logout" class="dropdown_link">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Logout</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+</body>
+</html>

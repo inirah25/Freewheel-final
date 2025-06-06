@@ -7,7 +7,7 @@ from django.urls import reverse
 from .models import Admin
 from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
-from .models import Employee, Admin
+from .models import Employee, Admin, Notice
 from django.views.decorators.http import require_POST
 import os
 from django.conf import settings
@@ -63,103 +63,94 @@ def logout_view(request):
  
  
 def home(request):
-
     is_admin = request.session.get('is_admin')
-
     excel_data = read_admin_excel()
 
     admin = None
-
     emp = None
- 
-    # 🛠️ 1. Handle POST for status update
 
+    # Retrieve current user
+    if is_admin:
+        try:
+            admin = Admin.objects.get(id=request.session.get('admin_id'))
+        except Admin.DoesNotExist:
+            return redirect('login')
+    else:
+        try:
+            emp = Employee.objects.get(id=request.session.get('employee_id'))
+        except Employee.DoesNotExist:
+            return redirect('login')
+
+    # 🛠️ Handle POST requests
     if request.method == 'POST':
+        # ✉️ Handle new notice posting
+        if 'notice_message' in request.POST:
+            message = request.POST.get('notice_message')
+            posted_by = admin.name if is_admin else emp.name
 
-        new_status = request.POST.get('status')
- 
-        if is_admin:
+            Notice.objects.create(message=message, posted_by=posted_by)
+            messages.success(request, "Notice posted successfully.")
+            return redirect('home')
 
+        # 🗑️ Handle notice deletion
+        elif 'delete_notice_id' in request.POST:
+            notice_id = request.POST.get('delete_notice_id')
             try:
+                notice = Notice.objects.get(id=notice_id)
+                if (is_admin and notice.posted_by == admin.name) or \
+                   (not is_admin and notice.posted_by == emp.name):
+                    notice.delete()
+                    messages.success(request, "Notice deleted successfully.")
+                else:
+                    messages.error(request, "You can only delete your own notices.")
+            except Notice.DoesNotExist:
+                messages.error(request, "Notice not found.")
+            return redirect('home')
 
-                admin = Admin.objects.get(id=request.session.get('admin_id'))
-
+        # 🔄 Handle status update
+        elif 'status' in request.POST:
+            new_status = request.POST.get('status')
+            if is_admin:
                 admin.status = new_status
-
                 admin.save()
-
-            except Admin.DoesNotExist:
-
-                return redirect('login')
-
-        else:
-
-            try:
-
-                emp = Employee.objects.get(id=request.session.get('employee_id'))
-
+            else:
                 emp.status = new_status
-
                 emp.save()
 
-            except Employee.DoesNotExist:
-
-                return redirect('login')
- 
-    # 🧠 2. Render page with updated info
+    # 🧠 Render data for template
+    all_notices = Notice.objects.order_by('-posted_at')  # all, newest first
+    employees = Employee.objects.all()
 
     if is_admin:
-
-        if not admin:
-
-            admin = Admin.objects.get(id=request.session.get('admin_id'))
-
         form = EmployeeForm()
-
-        employees = Employee.objects.all()
- 
         return render(request, 'accounts/home.html', {
-
             'admin': admin,
-
             'form': form,
-
             'admin_status': admin.status,
-
             'employees': employees,
-
             'excel_data': excel_data,
-
+            'notices': all_notices,
+            'is_admin': True,
         })
-
     else:
-
-        if not emp:
-
-            emp = Employee.objects.get(id=request.session.get('employee_id'))
-
         admin_obj = Admin.objects.first()
-
-        employees = Employee.objects.all()
- 
         return render(request, 'accounts/home.html', {
-
             'admin': emp,
-
             'admin_status': admin_obj.status if admin_obj else 'Unavailable',
-
             'admin_username': admin_obj.username if admin_obj else '',
-
             'admin_email': admin_obj.email if admin_obj else '',
-
             'employees': employees,
-
             'excel_data': excel_data,
-
+            'notices': all_notices,
+            'is_admin': False,
         })
-
  
  
+@never_cache # type: ignore
+def user(request):
+    users= list(Employee.objects.all().values('name', 'email', 'role', 'status'))
+    print(users)
+    return render(request, 'accounts/user.html', {'users': users})
  
  
  
@@ -246,49 +237,65 @@ def reset_password(request, token):
  
  
  
+from django.contrib import messages
+from django.utils.crypto import get_random_string
+from django.core.mail import send_mail
+from django.shortcuts import redirect, render
+from .models import Admin, Employee
+from .forms import EmployeeForm
+
 def create_employee(request):
     admin_id = request.session.get('admin_id')
     if not admin_id:
         return redirect('login')
- 
+
     try:
         admin = Admin.objects.get(id=admin_id)
     except Admin.DoesNotExist:
         return redirect('login')
- 
+
     if request.method == 'POST':
         form = EmployeeForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             role = form.cleaned_data['role']
- 
+
             username = email.split('@')[0]
             password = get_random_string(length=10)
- 
-            # Save to DB
+
+            
+            if Employee.objects.filter(username=username).exists():
+                messages.error(request, f"Username '{username}' already exists. Please use a different email.")
+                return redirect('home')
+
+            
             Employee.objects.create(
                 name=name,
                 email=email,
                 username=username,
                 password=password,  # Storing plain for now
                 role=role
+
             )
- 
-            # Send email
+
+            # 📧 Send email
             send_mail(
                 subject='Your account credentials',
                 message=f'Username: {username}\nPassword: {password}',
                 from_email='noreply@example.com',
                 recipient_list=[email]
             )
- 
+
             messages.success(request, f"Employee {username} created and emailed.")
             return redirect('home')
     else:
         form = EmployeeForm()
- 
+
     return render(request, 'accounts/home.html', {'form': form, 'admin': admin})
+
+ 
+
  
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
@@ -450,5 +457,4 @@ def assign_ticket(request):
  
 
 
-
-
+##############

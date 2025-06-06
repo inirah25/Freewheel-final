@@ -15,6 +15,10 @@ urlpatterns = [
     path('update-status/', views.update_status, name='update_status'),
     path('excel/', views.show_excel_table, name='excel_table'),
     path('assign/', views.assign_ticket, name='assign_ticket'),
+    path('user/', views.user, name='user'),
+
+
+    
 
 
     

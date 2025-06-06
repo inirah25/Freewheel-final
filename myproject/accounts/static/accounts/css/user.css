@@ -1,0 +1,684 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f3f4f6;
+  color: #333;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 16px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.main {
+display: flex;
+flex-wrap: nowrap;
+justify-content: center;
+height: 100%;
+}
+
+.filter{
+    max-width: 18%;
+    width: 100%;
+    background-color: #312063;
+    position: sticky;
+    margin: 1.4%;
+    max-height: 100%;
+    height: 83%;
+    transform: translateY(11.2%);
+    border-radius: 20px;
+    overflow: hidden;
+
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 40px;
+    padding: 6px 17px;
+    position: relative;
+    /* overflow: hidden; */
+}
+
+.slide-left {
+    animation: slideInLeft 1s ease-in-out;
+}
+
+.slide-right {
+    animation: slideInRight 1s ease-in-out;
+}
+
+.card {
+    background-color: #31206361;
+    border-radius: 10px;
+    overflow: hidden; /* Important to clip image corners */
+    height: 270px; /* Set a fixed height for uniformity */
+    max-width: 100%;
+    position: relative;
+    transition: 0.5s ease-in-out;
+    display: flex;
+  justify-content: center;
+}  
+
+.card:hover {
+transform: scale(1.05);
+}
+
+.card-bar .hover-details {
+  display: none;
+}
+
+.card:hover .card-bar .hover-details {
+  display: block;
+}
+
+.card .card-bar {
+position: absolute;
+top: 81%;
+left: 0;
+width: 100%;
+  max-width: 93%;
+transform: translateX(7px);
+height: 15%;
+background-color: #312063;
+border-radius: 10px;
+display: flex;
+align-items: center;
+flex-wrap: nowrap;
+flex-direction: column;
+color: white;
+transition: .5s ease-in-out;
+justify-content: flex-end;
+}
+
+.card:hover .card-bar {
+width: 100%;
+height: 100%;
+max-width: 100%;
+transform: translateX(0px);
+top: 0%;
+background: linear-gradient(to top, rgba(49, 32, 99, 1), rgba(255, 255, 255, 0.8));
+transition: 0.5s ease-in-out;
+overflow:visible;
+}
+
+.card:hover h2,
+.card:hover p {
+  opacity: 0; /* fade out main text */
+  transition: opacity 0.3s ease;
+  pointer-events: none; /* prevent interaction */
+}
+
+
+.card img {
+width: 92%;
+height: 76%;
+border-radius: 10px;
+object-fit: cover;
+display: block;
+transition: 0.5s ease-in-out;
+transform: translateY(7px);
+/* border: #312063 11px solid; */
+}
+
+.card:hover img {
+width: 100%;
+height: 100%;
+transform: translateY(0px);
+transition: 0.5s ease-in-out;
+
+}
+
+.card h2 {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.card p {
+  font-size: 12px;
+  color: #666;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 32px;
+}
+
+.nav-buttons button {
+
+  color: transparent;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  /* cursor: pointer; */
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover:not(:disabled) {
+  background-color: transparent;
+}
+
+button:disabled {
+  background-color: transparent;
+  cursor: not-allowed;
+}
+
+.side-button {
+  position: absolute;
+  top: 57%;
+  transform: translateY(-50%);
+  color: transparent;
+  border: none;
+  padding: 14px 18px;
+  font-size: 24px;
+  border-radius: 50%;
+  cursor: none;
+  z-index: 10;
+  transition: background-color 0.2s ease-in-out;
+  background-color: transparent;
+  /* box-shadow: 0 0 14px 11px rgba(49, 32, 99, .7); */
+}
+
+.side-button:hover:not(:disabled) {
+background-color: transparent;
+}
+
+.side-button:disabled {
+opacity: 0;
+}
+
+.left-button {
+left: 16%;
+}
+
+.right-button {
+right: 16px;
+}
+
+main {
+position: relative;
+flex: 1;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.custom-dropdown {
+appearance: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+background-color: #fff;
+color: #312063;
+font-size: 14px;
+font-weight: 500;
+padding: 10px 40px 10px 16px;
+border: 2px solid #312063;
+border-radius: 8px;
+background-image: url('data:image/svg+xml;utf8,<svg fill="%23312063" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+background-repeat: no-repeat;
+background-position: right 12px center;
+background-size: 20px;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+
+.custom-dropdown:hover {
+background-color: #f3f4f6;
+border-color: #000;
+}
+
+.custom-dropdown:focus {
+outline: none;
+box-shadow: 0 0 0 3px rgba(49, 32, 99, 0.3);
+}
+
+
+
+@media (max-width: 1024px) {
+  .card-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .card-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@keyframes slideInLeft {
+from {
+  transform: translateX(-50%);
+  /* opacity: 0; */
+}
+to {
+  transform: translateX(0%);
+  /* opacity: 1; */
+}
+}
+
+@keyframes slideInRight {
+from {
+  transform: translateX(50%);
+  /* opacity: 0; */
+}
+to {
+  transform: translateX(0%);
+  /* opacity: 1; */
+}
+}
+
+.filter_search {
+background: #fff;
+height: 34px;
+width: 250px;
+border-radius: 30px;
+padding: 0 15px;
+display: flex;
+align-items: center;
+justify-content: center;
+transform: translate(16px, 16px);
+}
+
+.filter_search input {
+background: transparent;
+border: none;
+outline: none;
+width: 100%;
+font-size: 16px;
+color: #312063;
+max-width: 175px;
+transform: translate(0px, -4px);
+}
+
+.filter_search:focus-within {
+box-shadow: 0 0 15px rgba(255, 255, 255, 1);
+}
+
+.filter_search button {
+background: none;
+border: none;
+cursor: pointer;
+transform: translate(17px, 1px);
+transition: transform 0.5s ease;
+}
+
+.filter_search i {
+font-size: 25px;
+color: #312063;
+}
+
+.slide-nav {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 10px;
+position: relative; /* or absolute if inside a container */
+transform: translate(11%, -59%);
+
+}
+
+.slide-nav .dot {
+width: 100px;
+height: 12px;
+border-radius: 50px;
+background: #ffffff;
+transition: 0.3s ease-in-out;
+cursor: pointer;
+box-shadow: 0 0 15px rgb(0, 0, 0, 0.5);
+}
+
+.slide-nav .dot:hover {
+transform: scale(1.02 );
+}
+
+.slide-nav .dot.active {
+background: #000000; /* or your theme color */
+}
+
+.filters-section {
+padding: 16px;
+color: white;
+font-size: 14px;
+}
+
+/* Dropdown Container */
+.filter-group {
+min-width: 15em;
+position: relative;
+margin: 2em 0;
+}
+
+/* Reset everything inside */
+.filter-group * {
+box-sizing: border-box;
+}
+
+/* Visible Select Box */
+.select-e {
+background: #ffffff;
+color: #000000;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border: 2px #2a2f3b solid;
+border-radius: 0.5em;
+padding: 0.6em 0.8em;
+cursor: pointer;
+transition: 0.3s ease-in-out;
+font-size: 1em;
+position: relative;
+}
+
+/* Hover effect */
+.select-e:hover {
+background: #26489a;
+color: white;
+}
+
+/* Text inside select */
+.selected-e {
+flex: 1;
+pointer-events: none;
+}
+
+/* Dropdown Menu */
+.menu-e {
+list-style: none;
+padding: 0.2em 0.5em;
+background: #323741;
+border: 1px #363a43 solid;
+box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.2);
+border-radius: 0.5em;
+color: #9fa5b5;
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+width: 100%;
+opacity: 0;
+display: none;
+transition: 0.5s ease-in-out;
+z-index: 10;
+max-height: 200px;
+overflow-y: auto;
+}
+
+/* Each item */
+.menu-e li {
+padding: 0.7em 0.5em;
+margin: 0.3em 0;
+border-radius: 0.5em;
+cursor: pointer;
+transition: background 0.2s;
+}
+
+/* Hover on list item */
+.menu-e li:hover {
+background: #2a2d35;
+}
+
+/* Selected item */
+.menu-e .active {
+background: #23242a;
+}
+
+/* When menu is open */
+.menu-open-e {
+display: block;
+opacity: 1;
+}
+
+/* Custom Scrollbar for WebKit */
+.menu-e::-webkit-scrollbar {
+width: 8px;
+}
+.menu-e::-webkit-scrollbar-track {
+background: #2a2d35;
+}
+.menu-e::-webkit-scrollbar-thumb {
+background-color: #555;
+border-radius: 10px;
+}
+
+/* Custom Scrollbar for Firefox */
+.menu-e {
+scrollbar-width: thin;
+scrollbar-color: #555 #2a2d35;
+}
+/* dddddddddddddddddddddddddddddddddddddddddddd */
+
+/* Dropdown Container */
+.filter-group {
+min-width: 15em;
+position: relative;
+margin: 2em 0;
+}
+
+/* Reset everything inside */
+.filter-group * {
+box-sizing: border-box;
+}
+
+/* Visible Select Box */
+.select-m {
+background: #ffffff;
+color: #000000;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border: 2px #2a2f3b solid;
+border-radius: 0.5em;
+padding: 0.6em 0.8em;
+cursor: pointer;
+transition: 0.3s ease-in-out;
+font-size: 1em;
+position: relative;
+}
+
+/* Hover effect */
+.select-m:hover {
+background: #26489a;
+color: white;
+}
+
+/* Text inside select */
+.selected-m {
+flex: 1;
+pointer-events: none;
+}
+
+/* Dropdown Menu */
+.menu-m {
+list-style: none;
+padding: 0.2em 0.5em;
+background: #323741;
+border: 1px #363a43 solid;
+box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.2);
+border-radius: 0.5em;
+color: #9fa5b5;
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+width: 100%;
+opacity: 0;
+display: none;
+transition: 0.5s ease-in-out;
+z-index: 10;
+max-height: 200px;
+overflow-y: auto;
+}
+
+/* Each item */
+.menu-m li {
+padding: 0.7em 0.5em;
+margin: 0.3em 0;
+border-radius: 0.5em;
+cursor: pointer;
+transition: background 0.2s;
+}
+
+/* Hover on list item */
+.menu-m li:hover {
+background: #2a2d35;
+}
+
+/* Selected item */
+.menu-m .active {
+background: #23242a;
+}
+
+/* When menu is open */
+.menu-open-m {
+display: block;
+opacity: 1;
+}
+
+/* Custom Scrollbar for WebKit */
+.menu-m::-webkit-scrollbar {
+width: 8px;
+}
+.menu-m::-webkit-scrollbar-track {
+background: #2a2d35;
+}
+.menu-m::-webkit-scrollbar-thumb {
+background-color: #555;
+border-radius: 10px;
+}
+
+/* Custom Scrollbar for Firefox */
+.menu-m {
+scrollbar-width: thin;
+scrollbar-color: #555 #2a2d35;
+}
+
+
+.apply-filter-btn {
+background-color: #fff;
+color: #312063;
+border: none;
+padding: 8px 12px;
+border-radius: 6px;
+cursor: pointer;
+font-weight: bold;
+transition: background 0.3s;
+}
+
+.apply-filter-btn:hover {
+background-color: #e0e0e0;
+}
+
+.toggle-option {
+display: inline-block;
+padding: 6px 25px;
+margin: 4px;
+border: 2px solid #ccc;
+border-radius: 20px;
+cursor: pointer;
+user-select: none;
+font-size: 14px;
+
+transition: all 0.2s ease-in-out;
+}
+
+.toggle-option input[type="checkbox"] {
+display: none;
+}
+
+.toggle-option.active {
+
+background-color: #fff;
+color: #000;
+border-color: #312063;
+}
+
+
+.card-bar a {
+color: #312063;
+text-decoration: underline;
+font-size: 12px;
+}
+
+.card:hover .card-bar {
+overflow: visible; /* Allow inner content to show */
+}
+
+#cardContainer {
+  position: relative;
+  min-height: 300px;
+}
+
+.no-results-wrapper {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2.5rem 3rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 420px;
+  width: 90%;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.no-results-icon {
+  margin-bottom: 1rem;
+}
+
+.card .hover-details {
+  display: none;
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  width: 90%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  top: 100%; /* directly below the card */
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 8px;
+  color: #000;
+  pointer-events: none;
+}
+
+.card:hover .hover-details {
+  display: block;
+}
+
+
+
+.no-results-icon svg {
+  width: 64px;
+  height: 64px;
+}
+
+.no-results {
+  font-size: 1.5rem;
+  color: #e41d1d;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -60%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+

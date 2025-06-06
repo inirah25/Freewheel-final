@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Employee Profiles</title>
+  <link rel="stylesheet" href="../static/accounts/css/user.css" />
+  <script src="../static/accounts/js/user.js" defer></script>
+ 
+  <!-- ✅ Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+        {% include 'accounts/navBar.html' %}
+  <div class="main">
+    <div class="filter">
+        <div class="filters-section">
+          <form id="employeeFilterForm">
+           
+            <div class="filter-group dropdown-e">
+              <label for="employeeSearch">Employee Name:</label>
+              <div class="select-e">
+                <span class="selected-e" id="employeeSearch">All Employees</span>
+              </div>
+              <ul class="menu-e">
+                <li class="employee-option">All Employees</li>
+                {% for i in users %}
+                  <li class="employee-option">{{ i.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+           
+           
+           
+       
+            <div class="filter-group">
+              <label>Shift:</label>
+              <div class="checkbox-group">
+                <label class="toggle-option"><input type="checkbox" name="shift" value="S1"> S1</label>
+                <label class="toggle-option"><input type="checkbox" name="shift" value="S2"> S2</label>
+                <label class="toggle-option"><input type="checkbox" name="shift" value="S3"> S3</label>
+              </div>
+            </div>
+           
+            <div class="filter-group">
+              <label>Type:</label>
+              <div class="checkbox-group">
+                <label class="toggle-option"><input type="checkbox" name="type" value="E1"> E1</label>
+                <label class="toggle-option"><input type="checkbox" name="type" value="E2"> E2</label>
+                <label class="toggle-option"><input type="checkbox" name="type" value="E3"> E3</label>
+                <label class="toggle-option"><input type="checkbox" name="type" value="E4"> E4</label>
+                <label class="toggle-option"><input type="checkbox" name="type" value="Manager"> Manager</label>
+              </div>
+            </div>
+ 
+            <div class="filter-group dropdown-m">
+              <label for="managerSearch">Reporting Manager:</label>
+              <div class="select-m">
+                <span class="selected-m">All Managers</span>
+              </div>
+              <ul class="menu-m">
+                <li>Aravindh Sarvalingham</li>
+                <li>Sornambigai</li>
+              </ul>
+            </div>
+           
+          </form>
+        </div>
+ 
+    </div>
+    <!-- ✅ Only one card container -->
+    <!-- ✅ Only one card container -->
+<div style="    
+  height: 100%;
+  position: relative;
+  top:11.7%;
+  overflow: hidden;
+  width: 100%;">
+    <div class="con-card">
+    <div id="cardContainer" class="card-container"></div>
+  </div>
+  <div class="nav-buttons">
+  <button id="prevBtn" class="side-button left-button">
+    <i class="fa-solid fa-arrow-left"></i>
+  </button>
+  <button id="nextBtn" class="side-button right-button">
+    <i class="fa-solid fa-arrow-right"></i>
+  </button>
+  </div>
+</div>
+ 
+  </div>
+    <div class="slide-nav" id="slideNav">
+ 
+    <div class="dot active"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+ 
+  </div>
+    {{ users|json_script:"user-data" }} 
+
+</body>
+</html>
