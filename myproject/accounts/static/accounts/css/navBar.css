@@ -4,12 +4,12 @@
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 }
-
+ 
 body {
   background-color: #f4f4f4;
   height: 100vh;
 }
-
+ 
 nav {
   position: fixed;
   display: flex;
@@ -24,13 +24,13 @@ nav {
   z-index: 1000;
   width: -webkit-fill-available;
 }
-
+ 
 .logo {
   font-size: 1.5em;
   color: white;
   font-weight: bold;
 }
-
+ 
 .search-box {
   background: #fff;
   height: 34px;
@@ -40,9 +40,9 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translate(194px, 0px);
+  transform: translate(422px, 0px);
 }
-
+ 
 .search-box input {
   background: transparent;
   border: none;
@@ -53,11 +53,11 @@ nav {
   max-width: 175px;
   transform: translate(0px, -4px);
 }
-
+ 
 .search-box:focus-within {
   box-shadow: 0 0 15px rgba(255, 255, 255, 1);
 }
-
+ 
 .search-box button {
   background: none;
   border: none;
@@ -65,19 +65,51 @@ nav {
   transform: translate(17px, 1px);
   transition: transform 0.5s ease;
 }
+ 
+.notice-icon {
+  top: 2px;
+  left: -14px;
+  position: relative;
+}
 
+.notice-icon a{
+  background: none;
+    border: none;
+    cursor: pointer;
+}
+ 
+.notice-icon i{
+  font-size: 30px;
+  color: white;
+  position: relative;
+}
+ 
+.notice-icon span {
+  position: absolute;
+    top: -5px;
+    right: 9px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+    display: none;
+}
+ 
 .search-box i {
   font-size: 25px;
   color: #312063;
 }
-
+ 
 .nav-links {
   position: relative;
   display: flex;
   align-items: center;
   height: 80%;
+  left: 14%;
+ 
 }
-
+ 
 .nav-links a {
   font-size: 1em;
   font-weight: 500;
@@ -88,7 +120,7 @@ nav {
   display: flex;
   align-items: center;
 }
-
+ 
 .nav-links span {
   position: absolute;
   top: 0;
@@ -97,25 +129,23 @@ nav {
   border-radius: 10px;
   transition: all 0.3s ease;
   z-index: 0;
-  
+ 
 }
-
+ 
 a:hover ~ span {
   background: linear-gradient(45deg, aqua, #312063);
 }
-
+ 
 /* Animation Positioning */
 .nav-links a:nth-child(1):hover ~ span { left: 5px; width: 112px; }
-.nav-links a:nth-child(2):hover ~ span { left: 117px; width: 87px; }
-.nav-links a:nth-child(3):hover ~ span { left: 204px; width: 94px; }
-.nav-links a:nth-child(4):hover ~ span { left: 270px; width: 90px; }
-.nav-links a:nth-child(5):hover ~ span { left: 365px; width: 79px; }
-
+.nav-links a:nth-child(2):hover ~ span { left: 117px; width: 90px; }
+.nav-links a:nth-child(3):hover ~ span { left: 207px; width: 81px; }
+ 
 .profile {
   position: relative;
   margin-left: -16%;
 }
-
+ 
 .profile-img {
   width: 40px;
   height: 40px;
@@ -124,12 +154,12 @@ a:hover ~ span {
   transition: transform 0.3s ease;
   cursor: pointer;
 }
-
+ 
 .profile-img:hover {
   transform: scale(1.05);
   box-shadow: 0px 0px 10px 5px rgba(230, 226, 226, 0.7);
 }
-
+ 
 .dropdown_list {
   position: absolute;
   top: 145%;
@@ -145,12 +175,12 @@ a:hover ~ span {
   pointer-events: none;
   z-index: 50;
 }
-
+ 
 .dropdown_list.show {
   opacity: 1;
   pointer-events: auto;
 }
-
+ 
 .dropdown_list::after {
   content: '';
   width: 16px;
@@ -162,7 +192,7 @@ a:hover ~ span {
   transform: rotate(45deg);
   z-index: -1;
 }
-
+ 
 .dropdown_link {
   text-decoration: none;
   color: #fff;
@@ -173,14 +203,12 @@ a:hover ~ span {
   border-radius: .25rem;
   transition: background-color .3s;
 }
-
+ 
 .dropdown_link:hover {
   background-color: #603fc4;
 }
-
+ 
 .dropdown_link span {
   font-size: small;
   font-weight: bold;
 }
-
-

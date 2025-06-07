@@ -1,0 +1,128 @@
+<form method="post">
+    {% csrf_token %}
+    <label>Enter Ticket ID:</label>
+    <input type="text" name="ticket_id" required>
+    <button type="submit">Search</button>
+  </form>
+   
+  {% if ticket %}
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="ticket_id" value="{{ ticket_id }}">
+      <table border="1">
+  {% for key, value in ticket.items %}
+    {% if key != 'Comment' and key != 'Action' %}
+      <tr>
+        <th>{{ key }}</th>
+        <td>
+          {% if value is None or value == 'NaT' %}
+            -
+          {% else %}
+            {{ value|stringformat:"s" }}
+          {% endif %}
+        </td>
+      </tr>
+    {% endif %}
+  {% endfor %}
+   
+   
+        <tr>
+          <th>Comment</th>
+          <td>
+            <textarea name="comment" required>{{ comment }}</textarea>
+          </td>
+        </tr>
+        <tr>
+          <th>Action</th>
+          <td>
+            <select name="action">
+              <option value="Yes">Yes</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+      <button type="submit" name="submit_action" value="Submit">Submit</button>
+    </form>
+  {% elif searched %}
+    <p style="color:red;">Ticket not found.</p>
+  {% endif %}
+
+  <style>
+    form {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 15px 20px;
+      background: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.95rem;
+    }
+  
+    label {
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: inline-block;
+    }
+  
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 6px 10px;
+      margin-bottom: 12px;
+      border: 1px solid #bbb;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+  
+    textarea {
+      height: 80px;
+      resize: vertical;
+    }
+  
+    button {
+      padding: 8px 16px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+  
+    button:hover {
+      background-color: #218838;
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+  
+    table th,
+    table td {
+      border: 1px solid #ddd;
+      padding: 6px 10px;
+      text-align: left;
+    }
+  
+    table th {
+      background-color: #f5f5f5;
+      font-weight: 600;
+    }
+  
+    table td {
+      background-color: #fff;
+    }
+  
+    p {
+      color: red;
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.95rem;
+    }
+  </style>
+  

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>Today's Work Status</title>
+  <link rel="stylesheet" href="../static/accounts/css/status.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <script src="../static/accounts/js/status.js" defer></script>
+ 
+</head>
+<body>
+ 
+    {% include 'accounts/navBar.html' %}
+  <div class="container active1">
+    <div id="reset-password-div" class="form-box login status ">
+        <form method="POST" action="{% url 'status' %}">
+            {% csrf_token %}
+            <h1>User Status</h1>
+            
+            <select id="status" name="status" required>
+                <option value="" {% if not user.status %}selected{% endif %}>-- Choose Status --</option>
+                <option value="logged in" {% if user.status == "logged in" %}selected{% endif %}>Logged In</option>
+                <option value="brb" {% if user.status == "brb" %}selected{% endif %}>Be Right Back</option>
+                <option value="logged off" {% if user.status == "logged off" %}selected{% endif %}>Logged Off</option>
+                <option value="back" {% if user.status == "back" %}selected{% endif %}>Back</option>
+              </select>
+              
+ 
+        <div class="shift-container" id="shiftContainer">
+            <select id="shift" name="shift" required>
+                <option value="" disabled {% if not user.shift %}selected{% endif %}>-- Choose shift --</option>
+                <option value="shift1" {% if user.shift == "shift1" %}selected{% endif %}>Shift 1</option>
+                <option value="shift2" {% if user.shift == "shift2" %}selected{% endif %}>Shift 2</option>
+                <option value="shift3" {% if user.shift == "shift3" %}selected{% endif %}>Shift 3</option>
+               
+              
+                <option value="" disabled {% if not user.shift %}selected{% endif %}>-- Choose shift --</option>
+                <option value="shift1" {% if user.shift == "shift1" %}selected{% endif %}>Shift 4</option>
+                <option value="shift2" {% if user.shift == "shift2" %}selected{% endif %}>Shift 5</option>
+                <option value="shift3" {% if user.shift == "shift3" %}selected{% endif %}>Shift 6</option>
+            <option value="general" {% if user.shift == "general" %}selected{% endif %}>General Shift</option>
+            <option value="na" {% if user.shift == "na" %}selected{% endif %} >Not Applicable</option>
+          </select>
+        </div>
+ 
+        <button id="confirm-btn statusDisplay" type="submit" class="btn status-indicator">
+              Please select a status
+        </button>
+ 
+      </form>
+    </div>
+ 
+    <div class="form-box forgot-password">
+        <form action="#">
+          <h1>Work Mode Status</h1>
+        <select id="mode" required>
+          <option value="" disabled selected>-- Choose Mode --</option>
+          <option value="Work From Office">Work From Home</option>
+          <option value="Work From Office">Work From Office</option>
+          <option value="On Leave">On Leave</option>
+]        </select>
+ 
+        <button id="confirm-workmode" type="submit" class="btn status-indicator">
+              Please select a status
+        </button>
+        </form>
+      </div>
+ 
+      <div class="toggle-box">
+        </div>
+ 
+ 
+ 
+      </div>
+  </div>
+</body>
+</html>

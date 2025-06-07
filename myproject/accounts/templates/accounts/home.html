@@ -37,13 +37,13 @@
             </div>
 
             <!-- Tickets -->
-            <div class="card c2">
+            <div class="card c2" onclick="window.location.href='/status'" style="cursor: pointer;">
                 <img src="../static/images/tickets.jpg" alt="Tickets">
                 <div class="layer"></div>
                 <div class="info">
-                    <h1>Tickets</h1>
+                    <h1>Today's Work Status</h1>
                     <p>Track service requests, resolve customer complaints, and ensure all tasks are completed on time.</p>
-                    <button onclick="location.href='/tickets'">GET INTO IT</button>
+                    <button onclick="location.href='/status'">GET INTO IT</button>
                 </div>
             </div>
 
@@ -65,12 +65,15 @@
     <div id="slide3" class="section slide3">
         <div class="content">
           <h1>Ticket Management</h1>
-          <p>
-            Handle all your support and service tickets in one place. Easily create new tickets, assign them to the right team members, and track their progress in real-time. With automated status updates and priority levels, no issue slips through the cracks.
-          </p>
-          <p>
-            View detailed ticket history, communicate internally through comments, and generate reports to analyze resolution time and efficiency. Our system ensures a seamless experience for both your employees and customers.
-          </p>
+          <div class="card c4">
+            <img src="../static/images/shifts.jpg" alt="Shifts">
+            <div class="layer"></div>
+            <div class="info">
+                <h1>Shift</h1>
+                <p>Organize work hours effectively. Create, edit, and assign shifts to balance workloads and maximize output.</p>
+                <button onclick="location.href='/shift-mail'">GET INTO IT</button>
+            </div>
+        </div>
         </div>
       </div>
       

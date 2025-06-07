@@ -12,13 +12,15 @@ urlpatterns = [
     path('home/', views.home, name='home'),
     path('logout/', views.logout_view, name='logout'),  # <-- add this
     path('create-employee/', views.create_employee, name='create_employee'),
-    path('update-status/', views.update_status, name='update_status'),
+    path('notice/', views.notice_view, name='notice'),
     path('excel/', views.show_excel_table, name='excel_table'),
     path('assign/', views.assign_ticket, name='assign_ticket'),
     path('user/', views.user, name='user'),
-
-
-    
+    path('status/', views.status_view, name='status'),
+    path('show-shift-mail/', views.submitted_shift_end, name='submitted_shift_end'),
+    path('shift-mail/', views.shift_end_email, name='shift_end_email'),
+    path('profile/', views.view_profile, name='view_profile'),
+    path('upload-profile-image/', views.upload_profile_image, name='upload_profile_image'),
 
 
     
@@ -26,3 +28,5 @@ urlpatterns = [
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+   
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

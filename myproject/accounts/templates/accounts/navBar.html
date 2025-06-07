@@ -29,12 +29,24 @@
       <a href="#slide4">Shifts</a>
       <span></span>
     </div>
+    <div class="notice-icon">
+      <a href="{% url 'notice' %}"  id="notification-button">
+        <i class='bx bx-chat'></i>
+        <span id="notification-badge">
+          {% comment %} {{ unread_notice_count }} {% endcomment %}
+        </span>
+        </a>
+    </div>
 
     <div class="profile" id="profile">
-      <img src="../static/images/attachment_88917790.png" alt="Profile" class="profile-img" id="profile-img">
+      <img src="{{ user.profile_image.url }}" alt="Profile" class="profile-img" id="profile-img">
       <div class="dropdown_list" id="dropdown">
-        <a href="/dashboard" class="dropdown_link">
-          <span>Harisha</span>
+        <a href="/dashboard"  class="dropdown_link">
+          <span>{{ user.name }}</span>
+        </a>
+        <a href="{% url 'create_employee' %}" class="dropdown_link">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>Create Employee</span>
         </a>
         <a href="/profile" class="dropdown_link">
           <i class="fa-solid fa-user-tie"></i> 
